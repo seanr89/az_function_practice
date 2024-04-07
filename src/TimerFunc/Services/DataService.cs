@@ -13,6 +13,7 @@ public class DataService
     public void GetData()
     {
         // Get data from a database or API
-        Thread.Sleep(5000);
+        Thread.Sleep(1000);
+        _logger.LogInformation("Data retrieved successfully");
     }
 }
