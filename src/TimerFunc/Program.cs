@@ -8,6 +8,7 @@ var builder = new HostBuilder()
 builder.ConfigureServices(services =>
 {
     services.AddTransient<DataService>();
+    services.AddHttpClient<MovieDbService>();
 });
 
 var host = builder.Build();
