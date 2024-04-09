@@ -4,6 +4,11 @@ using Microsoft.Extensions.Hosting;
 var builder = new HostBuilder()
     .ConfigureFunctionsWorkerDefaults();
 
+#if DEBUG
+    Console.WriteLine("Mode=Debug"); 
+#else
+    Console.WriteLine("Mode=Release"); 
+#endif
 
 builder.ConfigureServices(services =>
 {

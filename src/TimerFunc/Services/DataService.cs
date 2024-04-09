@@ -13,7 +13,8 @@ public class DataService
     public void GetData()
     {
         // Get data from a database or API
-        Thread.Sleep(1000);
-        _logger.LogInformation("Data retrieved successfully");
+        Thread.Sleep(100);
+        _logger.LogInformation($"Data retrieved successfully with env var: " +
+            $"{Environment.GetEnvironmentVariable("ENV_VAR", EnvironmentVariableTarget.Process) ?? "Not set"}");
     }
 }
