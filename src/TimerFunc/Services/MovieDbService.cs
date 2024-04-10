@@ -5,7 +5,7 @@ public class MovieDbService
 {
     private readonly HttpClient _httpClient;
     private readonly ILogger _logger;
-    private readonly string _remoteServiceBaseUrl;
+    private readonly string _apiKey = "Bearer myapikey";
 
     public MovieDbService(HttpClient httpClient, 
         ILoggerFactory loggerFactory)
@@ -25,7 +25,7 @@ public class MovieDbService
     public async Task Authenticate()
     {
         var request = new HttpRequestMessage(HttpMethod.Get, "authentication");
-        request.Headers.Add("Authorization", "Bearer mytoken");
+        request.Headers.Add("Authorization", _apiKey);
     
         var response = await _httpClient.SendAsync(request);
 
@@ -36,6 +36,24 @@ public class MovieDbService
         else
         {
             Console.WriteLine("Failed to authenticate");
+        }
+    }
+
+    public async Task GetPeopleChanges()
+    {
+        var request = new HttpRequestMessage(HttpMethod.Get, $"person/changes?end_date=2024-04-10&page=1&start_date=2024-04-09");
+        request.Headers.Add("Authorization", _apiKey);
+
+        var response = await _httpClient.SendAsync(request);
+
+        if (response.IsSuccessStatusCode)
+        {
+            var content = await response.Content.ReadAsStringAsync();
+            _logger.LogInformation(content);
+        }
+        else
+        {
+            Console.WriteLine("Failed to get people changes");
         }
     }
 }
