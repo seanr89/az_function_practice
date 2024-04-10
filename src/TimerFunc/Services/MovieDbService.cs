@@ -25,7 +25,7 @@ public class MovieDbService
     public async Task Authenticate()
     {
         var request = new HttpRequestMessage(HttpMethod.Get, "authentication");
-        request.Headers.Add("Authorization", "Bearer eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiJmMzdhZWExMmEzZTJiMTE0NzdlMjcyMjgyNjc4YWIwYSIsInN1YiI6IjY2MTZkOTFjMGYxZTU4MDE3ZDQ2YWYxNSIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.K6SGjNgjrbn_PDVV18p5Ay1XRlP73gq2Xzu1WFft80I");
+        request.Headers.Add("Authorization", "Bearer mytoken");
     
         var response = await _httpClient.SendAsync(request);
 
