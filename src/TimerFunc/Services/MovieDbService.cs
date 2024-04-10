@@ -39,8 +39,10 @@ public class MovieDbService
         }
     }
 
-    public async Task GetPeopleChanges()
+    public async Task GetPeopleChanges(DateTime date)
     {
+        var startDate = date.AddDays(-1).ToString("yyyy-MM-dd");
+        var end = date.ToString("yyyy-MM-dd");
         var request = new HttpRequestMessage(HttpMethod.Get, $"person/changes?end_date=2024-04-10&page=1&start_date=2024-04-09");
         request.Headers.Add("Authorization", _apiKey);
 
