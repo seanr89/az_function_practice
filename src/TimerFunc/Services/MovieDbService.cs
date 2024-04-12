@@ -44,9 +44,9 @@ public class MovieDbService
     {
         var startDate = date.AddDays(-1).ToString("yyyy-MM-dd");
         var end = date.ToString("yyyy-MM-dd");
-        int page = 0;
+        int page = 1; // needs to start at 1
         int totalPages = 1;
-        List<PersonChange> changes = new List<PersonChange>();
+        List<PersonChange> changes = [];
 
         do{
             _logger.LogInformation($"Getting people changes for page {page}");    

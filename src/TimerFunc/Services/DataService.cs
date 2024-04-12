@@ -20,7 +20,7 @@ public class DataService
         _logger.LogInformation($"Data retrieved successfully with env var: " +
             $"{Environment.GetEnvironmentVariable("ENV_VAR", EnvironmentVariableTarget.Process) ?? "Not set"}");
 
-        _movieDbService.Authenticate().Wait();
+        //_movieDbService.Authenticate().Wait();
 
         DateTime date = DateTime.Now;
         _movieDbService.GetPeopleChanges(date).Wait();
