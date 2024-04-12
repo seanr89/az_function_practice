@@ -73,5 +73,36 @@ public class MovieDbService
         }
 
         _logger.LogInformation($"GetPeopleChanges:Got {changes.Count} changes");
+        if(changes.Count > 0)
+        {
+            await QueryPersonsChangedUpdates(date, changes);
+        }
+    }
+
+    async Task QueryPersonsChangedUpdates(DateTime date, List<PersonChange> changes)
+    {
+        _logger.LogInformation("QueryPersonsChangedUpdates");
+
+        foreach(var change in changes)
+        {
+            _logger.LogInformation($"Person {change.id} has changed");
+
+            var request = new HttpRequestMessage(HttpMethod.Get, $"person/{change.id}/changes?page=1");
+            request.Headers.Add("Authorization", _apiKey);
+
+            var response = await _httpClient.SendAsync(request);
+
+            if(response.IsSuccessStatusCode)
+            {
+                var content = await response.Content.ReadFromJsonAsync<PersonChangeResponse>();
+                _logger.LogInformation($"Person {change.id} has {content.total_results} changes");
+            }
+            else
+            {
+                _logger.LogError($"Person {change.id} changes failed");
+            }
+
+        }
+        throw new NotImplementedException();
     }
 }
