@@ -48,21 +48,29 @@ public class MovieDbService
         int totalPages = 1;
         List<PersonChange> changes = [];
 
-        do{
-            _logger.LogInformation($"Getting people changes for page {page}");    
-            var request = new HttpRequestMessage(HttpMethod.Get, $"person/changes?end_date={end}&page={page}&start_date={startDate}");
-            request.Headers.Add("Authorization", _apiKey);
+        try{
+            do{
+                _logger.LogInformation($"Getting people changes for page {page}");    
+                var request = new HttpRequestMessage(HttpMethod.Get, $"person/changes?end_date={end}&page={page}&start_date={startDate}");
+                request.Headers.Add("Authorization", _apiKey);
 
-            var response = await _httpClient.SendAsync(request);
+                var response = await _httpClient.SendAsync(request);
 
-            if (response.IsSuccessStatusCode)
-            {
-                var content = await response.Content.ReadFromJsonAsync<PersonChangeResponse>();
-                changes.AddRange(content.results);
-                totalPages = content.total_pages;
-            }
-            page++;
-        }while(page <= totalPages);
+                if (response.IsSuccessStatusCode)
+                {
+                    //var stringData = await response.Content.ReadAsStringAsync();
+                    //_logger.LogInformation($"Got changes for page {page} : {stringData}");
+                    var content = await response.Content.ReadFromJsonAsync<PersonChangeResponse>();
+                    changes.AddRange(content.results.Where(p => p.adult == true));
+                    totalPages = content.total_pages;
+                }
+                page++;
+            }while(page <= totalPages);
+        }
+        catch(Exception ex)
+        {
+            _logger.LogError($"GetPeopleChanges - An error occurred: {ex.Message}");
+        }
 
         _logger.LogInformation($"GetPeopleChanges:Got {changes.Count} changes");
     }

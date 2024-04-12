@@ -10,5 +10,5 @@ public record PersonChangeResponse
 
 public record PersonChange{
     public int id { get; set; }
-    public bool adult { get; set; }
+    public bool? adult { get; set; }
 }

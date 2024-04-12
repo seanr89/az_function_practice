@@ -15,14 +15,21 @@ public class DataService
 
     public void GetData()
     {
-        // Get data from a database or API
-        //Thread.Sleep(100);
-        _logger.LogInformation($"Data retrieved successfully with env var: " +
-            $"{Environment.GetEnvironmentVariable("ENV_VAR", EnvironmentVariableTarget.Process) ?? "Not set"}");
+        try{
+            // Get data from a database or API
+            //Thread.Sleep(100);
+            _logger.LogInformation($"Data retrieved successfully with env var: " +
+                $"{Environment.GetEnvironmentVariable("ENV_VAR", EnvironmentVariableTarget.Process) ?? "Not set"}");
 
-        //_movieDbService.Authenticate().Wait();
+            //_movieDbService.Authenticate().Wait();
 
-        DateTime date = DateTime.Now;
-        _movieDbService.GetPeopleChanges(date).Wait();
+            DateTime date = DateTime.Now;
+            _movieDbService.GetPeopleChanges(date).Wait();
+        }
+        catch(Exception ex)
+        {
+            _logger.LogError(ex, "An error occurred");
+        }
+
     }
 }
