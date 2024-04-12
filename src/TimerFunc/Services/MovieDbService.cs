@@ -16,60 +16,45 @@ public class MovieDbService
 
         _httpClient.BaseAddress = new Uri("https://api.themoviedb.org/3/");
 
-        // using Microsoft.Net.Http.Headers;
-        // The GitHub API requires two headers.
         _httpClient.DefaultRequestHeaders.Add(
             HeaderNames.Accept, "application/json");
 
     }
 
-    public async Task Authenticate()
-    {
-        var request = new HttpRequestMessage(HttpMethod.Get, "authentication");
-        request.Headers.Add("Authorization", _apiKey);
-    
-        var response = await _httpClient.SendAsync(request);
-
-        if (response.IsSuccessStatusCode)
-        {
-            _logger.LogInformation("Authenticated successfully");
-        }
-        else
-        {
-            Console.WriteLine("Failed to authenticate");
-        }
-    }
-
+    /// <summary>
+    /// Retrieves the people changes from a specific date.
+    /// </summary>
+    /// <param name="date">The date to retrieve the changes from.</param>
+    /// <returns>A task representing the asynchronous operation.</returns>
     public async Task GetPeopleChanges(DateTime date)
     {
+        // Date format is yyyy-MM-dd for start and end date query parameters
         var startDate = date.AddDays(-1).ToString("yyyy-MM-dd");
         var end = date.ToString("yyyy-MM-dd");
-        int page = 1; // needs to start at 1
+        // pagingation - needs to start at 1
+        int page = 1; 
+        // total pages to query - will be updated from first call
         int totalPages = 1;
+        // list of person change records!
         List<PersonChange> changes = [];
 
-        try{
-            do{
-                _logger.LogInformation($"Getting people changes for page {page}");    
-                var request = new HttpRequestMessage(HttpMethod.Get, $"person/changes?end_date={end}&page={page}&start_date={startDate}");
-                request.Headers.Add("Authorization", _apiKey);
+        // recursively get all pages of changes
+        do{
+            _logger.LogInformation($"Getting people changes for page {page}");    
+            var request = new HttpRequestMessage(HttpMethod.Get, $"person/changes?end_date={end}&page={page}&start_date={startDate}");
+            request.Headers.Add("Authorization", _apiKey);
 
-                var response = await _httpClient.SendAsync(request);
-                if (response.IsSuccessStatusCode)
-                {
-                    var content = await response.Content.ReadFromJsonAsync<PersonChangeResponse>();
-                    changes.AddRange(content.results.Where(p => p.adult == true));
-                    totalPages = content.total_pages;
-                }
-                page++;
-            }while(page <= totalPages);
-        }
-        catch(Exception ex)
-        {
-            _logger.LogError($"GetPeopleChanges - An error occurred: {ex.Message}");
-        }
+            var response = await _httpClient.SendAsync(request);
+            if (response.IsSuccessStatusCode)
+            {
+                var content = await response.Content.ReadFromJsonAsync<PersonChangeResponse>();
+                changes.AddRange(content.results.Where(p => p.adult == true));
+                totalPages = content.total_pages;
+            }
+            page++;
+        }while(page <= totalPages);
 
-        _logger.LogInformation($"GetPeopleChanges:Got {changes.Count} changes");
+        _logger.LogInformation($"GetPeopleChanges: {changes.Count} changes");
         if(changes.Count > 0)
         {
             await QueryPersonsChangedUpdates(date, changes);
@@ -88,19 +73,34 @@ public class MovieDbService
 
         foreach(var change in changes)
         {
-            _logger.LogInformation($"Person {change.id} has changed");
-
+            //_logger.LogInformation($"Person {change.id} has changed");
             var request = new HttpRequestMessage(HttpMethod.Get, $"person/{change.id}/changes?page=1");
             request.Headers.Add("Authorization", _apiKey);
 
             var response = await _httpClient.SendAsync(request);
-
             if(response.IsSuccessStatusCode)
             {
                 var content = await response.Content.ReadFromJsonAsync<PersonChangeUpdate>();
                 _logger.LogInformation($"Person {change.id} data found: {content.changes.Count} changes");
             }
         }
-        throw new NotImplementedException();
+    }
+
+    /// <summary>
+    /// Test Authentication.
+    /// </summary>
+    /// <returns>A task representing the asynchronous operation.</returns>
+    public async Task TestAuthentication()
+    {
+        var request = new HttpRequestMessage(HttpMethod.Get, "authentication");
+        request.Headers.Add("Authorization", _apiKey);
+    
+        var response = await _httpClient.SendAsync(request);
+        if (response.IsSuccessStatusCode)
+        {
+            _logger.LogInformation("Authenticated successfully");
+            return;
+        }
+        _logger.LogWarning("Failed to authenticate");
     }
 }

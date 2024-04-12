@@ -16,13 +16,7 @@ public class DataService
     public void GetData()
     {
         try{
-            // Get data from a database or API
-            //Thread.Sleep(100);
-            _logger.LogInformation($"Data retrieved successfully with env var: " +
-                $"{Environment.GetEnvironmentVariable("ENV_VAR", EnvironmentVariableTarget.Process) ?? "Not set"}");
-
-            //_movieDbService.Authenticate().Wait();
-
+            // Get the current date for usage on queries
             DateTime date = DateTime.Now;
             _movieDbService.GetPeopleChanges(date).Wait();
         }
