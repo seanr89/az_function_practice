@@ -21,5 +21,8 @@ public class DataService
             $"{Environment.GetEnvironmentVariable("ENV_VAR", EnvironmentVariableTarget.Process) ?? "Not set"}");
 
         _movieDbService.Authenticate().Wait();
+
+        DateTime date = DateTime.Now;
+        _movieDbService.GetPeopleChanges(date).Wait();
     }
 }

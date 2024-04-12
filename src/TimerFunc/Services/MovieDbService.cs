@@ -1,3 +1,4 @@
+using System.Net.Http.Json;
 using Microsoft.Extensions.Logging;
 using Microsoft.Net.Http.Headers;
 
@@ -5,7 +6,7 @@ public class MovieDbService
 {
     private readonly HttpClient _httpClient;
     private readonly ILogger _logger;
-    private readonly string _apiKey = "Bearer myapikey";
+    private readonly string _apiKey = "Bearer " + Environment.GetEnvironmentVariable("MOVIE_DB_API_KEY");
 
     public MovieDbService(HttpClient httpClient, 
         ILoggerFactory loggerFactory)
@@ -43,19 +44,27 @@ public class MovieDbService
     {
         var startDate = date.AddDays(-1).ToString("yyyy-MM-dd");
         var end = date.ToString("yyyy-MM-dd");
-        var request = new HttpRequestMessage(HttpMethod.Get, $"person/changes?end_date=2024-04-10&page=1&start_date=2024-04-09");
-        request.Headers.Add("Authorization", _apiKey);
+        int page = 0;
+        int totalPages = 1;
+        List<PersonChange> changes = new List<PersonChange>();
 
-        var response = await _httpClient.SendAsync(request);
+        do{    
+            var request = new HttpRequestMessage(HttpMethod.Get, $"person/changes?end_date={end}&page={page}&start_date={startDate}");
+            request.Headers.Add("Authorization", _apiKey);
 
-        if (response.IsSuccessStatusCode)
-        {
-            var content = await response.Content.ReadAsStringAsync();
-            _logger.LogInformation(content);
-        }
-        else
-        {
-            Console.WriteLine("Failed to get people changes");
-        }
+            var response = await _httpClient.SendAsync(request);
+
+            if (response.IsSuccessStatusCode)
+            {
+                var content = await response.Content.ReadFromJsonAsync<PersonChangeResponse>();
+                changes.AddRange(content.changes);
+                totalPages = content.total_pages;
+            }
+            // else
+            // {
+            //     Console.WriteLine("Failed to get people changes");
+            // }
+            page++;
+        }while(page < totalPages);
     }
 }

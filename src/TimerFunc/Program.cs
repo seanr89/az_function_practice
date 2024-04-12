@@ -6,6 +6,7 @@ var builder = new HostBuilder()
 
 #if DEBUG
     Console.WriteLine("Mode=Debug"); 
+    DotNetEnv.Env.Load();
 #else
     Console.WriteLine("Mode=Release"); 
 #endif
