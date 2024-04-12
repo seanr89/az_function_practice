@@ -55,11 +55,8 @@ public class MovieDbService
                 request.Headers.Add("Authorization", _apiKey);
 
                 var response = await _httpClient.SendAsync(request);
-
                 if (response.IsSuccessStatusCode)
                 {
-                    //var stringData = await response.Content.ReadAsStringAsync();
-                    //_logger.LogInformation($"Got changes for page {page} : {stringData}");
                     var content = await response.Content.ReadFromJsonAsync<PersonChangeResponse>();
                     changes.AddRange(content.results.Where(p => p.adult == true));
                     totalPages = content.total_pages;
@@ -79,7 +76,13 @@ public class MovieDbService
         }
     }
 
-    async Task QueryPersonsChangedUpdates(DateTime date, List<PersonChange> changes)
+    /// <summary>
+    /// Queries the changed updates for persons based on the specified date and list of changes.
+    /// </summary>
+    /// <param name="date">The date to query for changed updates.</param>
+    /// <param name="changes">The list of person changes.</param>
+    /// <returns>A task representing the asynchronous operation.</returns>
+    private async Task QueryPersonsChangedUpdates(DateTime date, List<PersonChange> changes)
     {
         _logger.LogInformation("QueryPersonsChangedUpdates");
 
@@ -94,14 +97,9 @@ public class MovieDbService
 
             if(response.IsSuccessStatusCode)
             {
-                var content = await response.Content.ReadFromJsonAsync<PersonChangeResponse>();
-                _logger.LogInformation($"Person {change.id} has {content.total_results} changes");
+                var content = await response.Content.ReadFromJsonAsync<PersonChangeUpdate>();
+                _logger.LogInformation($"Person {change.id} data found: {content.changes.Count} changes");
             }
-            else
-            {
-                _logger.LogError($"Person {change.id} changes failed");
-            }
-
         }
         throw new NotImplementedException();
     }
