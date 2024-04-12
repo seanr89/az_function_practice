@@ -48,7 +48,8 @@ public class MovieDbService
         int totalPages = 1;
         List<PersonChange> changes = new List<PersonChange>();
 
-        do{    
+        do{
+            _logger.LogInformation($"Getting people changes for page {page}");    
             var request = new HttpRequestMessage(HttpMethod.Get, $"person/changes?end_date={end}&page={page}&start_date={startDate}");
             request.Headers.Add("Authorization", _apiKey);
 
@@ -57,14 +58,12 @@ public class MovieDbService
             if (response.IsSuccessStatusCode)
             {
                 var content = await response.Content.ReadFromJsonAsync<PersonChangeResponse>();
-                changes.AddRange(content.changes);
+                changes.AddRange(content.results);
                 totalPages = content.total_pages;
             }
-            // else
-            // {
-            //     Console.WriteLine("Failed to get people changes");
-            // }
             page++;
-        }while(page < totalPages);
+        }while(page <= totalPages);
+
+        _logger.LogInformation($"GetPeopleChanges:Got {changes.Count} changes");
     }
 }

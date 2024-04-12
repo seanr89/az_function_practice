@@ -1,7 +1,7 @@
 
 public record PersonChangeResponse
 {
-    public List<PersonChange> changes { get; set; }
+    public List<PersonChange> results { get; set; }
 
     public int page { get; set; }
     public int total_pages { get; set; }
