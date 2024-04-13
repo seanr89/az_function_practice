@@ -14,10 +14,10 @@ public class PersonUpdater
 
     public void TryUpdatePersonWithChanges(Person person, List<Change> changes)
     {
-        _logger.LogInformation($"Updating person {person.name} with {changes.Count} changes");
+        //_logger.LogInformation($"Updating person {person.name} with {changes.Count} changes");
         foreach(var change in changes)
         {
-            _logger.LogInformation($"Updating person {person.name} with change {change.key}");
+            //_logger.LogInformation($"Updating person {person.name} with change {change.key}");
             if(change.items is null || change.items[0].value is null)
             {
                 _logger.LogWarning($"No items found for change {change.key}");

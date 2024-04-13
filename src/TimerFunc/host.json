@@ -1,11 +1,11 @@
 {
     "version": "2.0",
     "logging": {
-        "LogLevel": {
-            "Default": "Information",
-            "System.Net.Http.HttpClient": "Warning",
-            "Microsoft.AspNetCore.HttpLogging.HttpLoggingMiddleware": "Warning",
-            "System.Net.Http.HttpClient.MovieDbService.LogicalHandler": "Warning",
+        "logLevel": {
+            "default": "Warning",
+            "Function": "Error",
+            "Host.Aggregator": "Error",
+            "Host.Results": "Information",
             "Microsoft.EntityFrameworkCore.Database": "Warning"
         },
         "applicationInsights": {

@@ -14,11 +14,11 @@ var builder = new HostBuilder()
 
 builder.ConfigureServices(services =>
 {
-    services.AddTransient<DataService>();
+    services.AddSingleton<DataService>();
     services.AddHttpClient<MovieDbService>();
     services.AddTransient<AppRunner>();
     services.AddTransient<PersonUpdater>();
-    services.AddDbContext<AppDbContext>(options =>
+    services.AddDbContextPool<AppDbContext>(options =>
     {
         options.UseNpgsql(Environment.GetEnvironmentVariable("CONNECT_STRING"));
     });
