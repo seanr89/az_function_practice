@@ -1,22 +1,30 @@
 {
     "version": "2.0",
     "logging": {
-        "applicationInsights": {
-            "samplingSettings": {
-                "isEnabled": true,
-                "excludedTypes": "Request"
-            },
-            "enableLiveMetricsFilters": true
-        },
         "LogLevel": {
             "Default": "Information",
-            "Host.Results": "Error",
+            "Host.Results": "Information",
             "Function": "Warning",
             "Host.Aggregator": "Information",
             "System.Net.Http.HttpClient": "Warning",
             "Microsoft.AspNetCore.HttpLogging.HttpLoggingMiddleware": "Warning",
             "System.Net.Http.HttpClient.MovieDbService.LogicalHandler": "Warning",
             "Microsoft.EntityFrameworkCore.Database": "Warning"
+        },
+        "applicationInsights": {
+            "samplingSettings": {
+                "isEnabled": true,
+                "excludedTypes": "Request"
+            },
+            "dependencyTrackingOptions": {
+                "enableSqlCommandTextInstrumentation": false
+            },
+            "httpAutoCollectionOptions": {
+                "enableHttpTriggerExtendedInfoCollection": false,
+                "enableW3CDistributedTracing": false,
+                "enableResponseHeaderInjection": false
+            },
+            "enableLiveMetricsFilters": true
         }
     },
     "functionTimeout": "00:05:00"

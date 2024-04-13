@@ -32,7 +32,7 @@ namespace TimerFunc
             {
                 _logger.LogError($"Error running timer function: {e.Message}");
             }
-
+            _logger.LogInformation("Timer function finished");
         }
     }
 }

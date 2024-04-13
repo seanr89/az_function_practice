@@ -1,6 +1,7 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Microsoft.Extensions.Logging;
 
 var builder = new HostBuilder()
     .ConfigureFunctionsWorkerDefaults();
@@ -22,6 +23,9 @@ builder.ConfigureServices(services =>
     {
         options.UseNpgsql(Environment.GetEnvironmentVariable("CONNECT_STRING"));
     });
+}).ConfigureLogging(logging =>
+{
+    logging.AddFilter("Azure.Core", LogLevel.Warning);
 });
 
 var host = builder.Build();

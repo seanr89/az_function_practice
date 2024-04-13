@@ -12,12 +12,15 @@ public class PersonUpdater
         _logger = loggerFactory.CreateLogger<PersonUpdater>();
     }
 
+    /// <summary>
+    /// Tries to update a person object with the given changes.
+    /// </summary>
+    /// <param name="person">The person object to update.</param>
+    /// <param name="changes">The list of changes to apply.</param>
     public void TryUpdatePersonWithChanges(Person person, List<Change> changes)
     {
-        //_logger.LogInformation($"Updating person {person.name} with {changes.Count} changes");
         foreach(var change in changes)
         {
-            //_logger.LogInformation($"Updating person {person.name} with change {change.key}");
             if(change.items is null || change.items[0].value is null)
             {
                 _logger.LogWarning($"No items found for change {change.key}");

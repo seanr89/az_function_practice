@@ -42,7 +42,7 @@ public class MovieDbService
 
         // recursively get all pages of changes
         do{
-            _logger.LogInformation($"Getting people changes for page {page}");    
+            //_logger.LogInformation($"Getting people changes for page {page}");    
             var request = new HttpRequestMessage(HttpMethod.Get, $"person/changes?end_date={end}&page={page}&start_date={startDate}");
             request.Headers.Add("Authorization", _apiKey);
 
