@@ -7,11 +7,11 @@ public record PersonChangeUpdate
 public record Change
 {
     public string key { get; set; }
-    public List<Item> items { get; set; }
+    public List<Item>? items { get; set; }
 }
 
 public record Item
 {
     public string action { get; set; }
-    public string value { get; set; }
+    public string? value { get; set; }
 }

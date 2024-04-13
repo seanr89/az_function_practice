@@ -85,13 +85,13 @@ public class MovieDbService
                 if(response.IsSuccessStatusCode)
                 {
                     var content = await response.Content.ReadFromJsonAsync<PersonChangeUpdate>();
-                    foreach(var data in content.changes)
-                    {
-                        if(data.items.Count > 1)
-                        {
-                            _logger.LogWarning($"Person {change.id} has more than one change item");
-                        }
-                    }
+                    // foreach(var data in content.changes)
+                    // {
+                    //     if(data.items.Count > 1)
+                    //     {
+                    //         _logger.LogWarning($"Person {change.id} has more than one change item");
+                    //     }
+                    // }
                     updates.Add(change.id, content);
                 }
             }

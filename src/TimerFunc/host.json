@@ -3,7 +3,8 @@
     "logging": {
         "LogLevel": {
             "Default": "Information",
-            "System.Net.Http.HttpClient": "Warning"
+            "System.Net.Http.HttpClient": "Warning",
+            "Microsoft.AspNetCore.HttpLogging.HttpLoggingMiddleware": "Warning"
         },
         "applicationInsights": {
             "samplingSettings": {
