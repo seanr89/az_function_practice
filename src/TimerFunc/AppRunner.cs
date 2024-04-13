@@ -25,15 +25,20 @@ public class AppRunner
         Task.Run(async () => {
             var updates = await _movieDbService.GetPeopleChanges(date);
 
+            int notFound = 0;
             foreach(var update in updates)
             {
                 var person = await _dataService.GetPerson(update.Key);
                 if(person is not null)
                 {
-                    _logger.LogInformation($"Person {person.name} found");
+                    _logger.LogInformation($"Person {person.name} found - Updating with changes");
                     _updater.TryUpdatePersonWithChanges(person, update.Value.changes);
                 }
+                else{
+                    notFound++;
+                }
             }
+            _logger.LogWarning($"Total of {notFound} people not found in database");
         }).Wait();
     }
 }

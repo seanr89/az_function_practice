@@ -19,6 +19,11 @@ public class DataService
         return await _appDbContext.People.FindAsync(id);
     }
 
+    /// <summary>
+    /// Updates a person in the database.
+    /// </summary>
+    /// <param name="person">The person object to update.</param>
+    /// <returns>A task representing the asynchronous operation.</returns>
     public async Task UpdatePerson(Person person)
     {
         _appDbContext.People.Update(person);
