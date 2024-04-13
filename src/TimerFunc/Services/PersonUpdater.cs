@@ -1,17 +1,23 @@
 
 
+using Microsoft.Extensions.Logging;
+
 public class PersonUpdater
 {
     internal readonly DataService _dataService;
-    public PersonUpdater(DataService dataService)
+    internal readonly ILogger _logger;
+    public PersonUpdater(DataService dataService, ILoggerFactory loggerFactory)
     {
         _dataService = dataService;
+        _logger = loggerFactory.CreateLogger<PersonUpdater>();
     }
 
     public void TryUpdatePersonWithChanges(Person person, List<Change> changes)
     {
+        _logger.LogInformation($"Updating person {person.name} with {changes.Count} changes");
         foreach(var change in changes)
         {
+            _logger.LogInformation($"Updating person {person.name} with change {change.key}");
             switch(change.key)
             {
                 case "name":

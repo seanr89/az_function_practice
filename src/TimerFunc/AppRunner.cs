@@ -33,10 +33,6 @@ public class AppRunner
                     _logger.LogInformation($"Person {person.name} found");
                     _updater.TryUpdatePersonWithChanges(person, update.Value.changes);
                 }
-                // else
-                // {
-                //     Console.WriteLine($"Person {update.Key} not found");
-                // }
             }
         }).Wait();
     }
