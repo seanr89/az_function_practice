@@ -20,12 +20,19 @@ namespace TimerFunc
         {
             _logger.LogInformation($"C# Timer trigger function executed at: {DateTime.Now}");
 
-            _runner.RunUpdate();
-            
-            if (myTimer.ScheduleStatus is not null)
-            {
-                _logger.LogInformation($"Next timer schedule at: {myTimer.ScheduleStatus.Next}");
+            try{
+                _runner.RunUpdate();
+                
+                if (myTimer.ScheduleStatus is not null)
+                {
+                    _logger.LogInformation($"Next timer schedule at: {myTimer.ScheduleStatus.Next}");
+                }
             }
+            catch(Exception e)
+            {
+                _logger.LogError($"Error running timer function: {e.Message}");
+            }
+
         }
     }
 }

@@ -1,11 +1,16 @@
 
+using Microsoft.Extensions.Logging;
+
 public class AppRunner
 {
     internal readonly MovieDbService _movieDbService;
     internal readonly DataService _dataService;
     internal readonly PersonUpdater _updater;
+    private readonly ILogger _logger;
 
-    public AppRunner(MovieDbService movieDbService, PersonUpdater updater, DataService dataService){
+    public AppRunner(MovieDbService movieDbService, PersonUpdater updater, DataService dataService,
+        ILoggerFactory loggerFactory){
+        _logger = loggerFactory.CreateLogger<AppRunner>();
         _movieDbService = movieDbService;
         _dataService = dataService;
         _updater = updater;
@@ -22,17 +27,16 @@ public class AppRunner
 
             foreach(var update in updates)
             {
-                Console.WriteLine($"Person {update.Key}");
                 var person = await _dataService.GetPerson(update.Key);
                 if(person is not null)
                 {
-                    Console.WriteLine($"Person {person.name} found");
+                    _logger.LogInformation($"Person {person.name} found");
                     _updater.TryUpdatePersonWithChanges(person, update.Value.changes);
                 }
-                else
-                {
-                    Console.WriteLine($"Person {update.Key} not found");
-                }
+                // else
+                // {
+                //     Console.WriteLine($"Person {update.Key} not found");
+                // }
             }
         }).Wait();
     }

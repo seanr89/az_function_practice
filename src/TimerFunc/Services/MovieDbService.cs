@@ -77,7 +77,6 @@ public class MovieDbService
 
         foreach(var change in changes)
         {
-            //_logger.LogInformation($"Person {change.id} has changed");
             var request = new HttpRequestMessage(HttpMethod.Get, $"person/{change.id}/changes?page=1");
             request.Headers.Add("Authorization", _apiKey);
 
@@ -86,7 +85,6 @@ public class MovieDbService
             {
                 var content = await response.Content.ReadFromJsonAsync<PersonChangeUpdate>();
                 updates.Add(change.id, content);
-                //_logger.LogInformation($"Person {change.id} data found: {content.changes.Count} changes");
             }
         }
         return updates;
