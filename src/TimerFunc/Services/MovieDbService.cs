@@ -26,7 +26,7 @@ public class MovieDbService
     /// </summary>
     /// <param name="date">The date to retrieve the changes from.</param>
     /// <returns>A task representing the asynchronous operation.</returns>
-    public async Task GetPeopleChanges(DateTime date)
+    public async Task<Dictionary<int, PersonChangeUpdate>> GetPeopleChanges(DateTime date)
     {
         // Date format is yyyy-MM-dd for start and end date query parameters
         var startDate = date.AddDays(-1).ToString("yyyy-MM-dd");
@@ -54,11 +54,13 @@ public class MovieDbService
             page++;
         }while(page <= totalPages);
 
-        _logger.LogInformation($"GetPeopleChanges: {changes.Count} changes");
+        _logger.LogInformation($"GetPeopleChanges: found total of {changes.Count} changes");
         if(changes.Count > 0)
         {
-            await QueryPersonsChangedUpdates(date, changes);
+            var res = await QueryPersonsChangedUpdates(date, changes);
+            return res;
         }
+        return [];
     }
 
     /// <summary>
@@ -67,9 +69,11 @@ public class MovieDbService
     /// <param name="date">The date to query for changed updates.</param>
     /// <param name="changes">The list of person changes.</param>
     /// <returns>A task representing the asynchronous operation.</returns>
-    private async Task QueryPersonsChangedUpdates(DateTime date, List<PersonChange> changes)
+    private async Task<Dictionary<int, PersonChangeUpdate>> QueryPersonsChangedUpdates(DateTime date, List<PersonChange> changes)
     {
         _logger.LogInformation("QueryPersonsChangedUpdates");
+
+        Dictionary<int, PersonChangeUpdate> updates = [];
 
         foreach(var change in changes)
         {
@@ -81,9 +85,11 @@ public class MovieDbService
             if(response.IsSuccessStatusCode)
             {
                 var content = await response.Content.ReadFromJsonAsync<PersonChangeUpdate>();
-                _logger.LogInformation($"Person {change.id} data found: {content.changes.Count} changes");
+                updates.Add(change.id, content);
+                //_logger.LogInformation($"Person {change.id} data found: {content.changes.Count} changes");
             }
         }
+        return updates;
     }
 
     /// <summary>

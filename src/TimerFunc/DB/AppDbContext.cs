@@ -1,16 +1,24 @@
+using Microsoft.EntityFrameworkCore;
 
-
-public class AppDbContext
+public class AppDbContext : DbContext
 {
+    public DbSet<Person> People { get; set; }
     public AppDbContext()
     {
         // Initialize the database connection
     }
 
-    public void SaveData()
+    public AppDbContext(DbContextOptions<AppDbContext> options) : base(options)
     {
-        // Save data to the database
-        Thread.Sleep(1000);
-        Console.WriteLine("Data saved successfully");
+        this.ChangeTracker.LazyLoadingEnabled = false;
+    }
+
+    protected override void OnModelCreating(ModelBuilder modelBuilder)
+    {
+        modelBuilder.Entity<Person>()
+            .HasKey(p => p.id);
+    
+        // modelBuilder.Entity<Movie>()
+        //     .HasKey(p => p.Id);
     }
 }

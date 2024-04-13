@@ -7,12 +7,12 @@ namespace TimerFunc
     public class TimerFunc
     {
         private readonly ILogger _logger;
-        private readonly DataService _dataService;
+        private readonly AppRunner _runner;
 
-        public TimerFunc(ILoggerFactory loggerFactory, DataService dataService)
+        public TimerFunc(ILoggerFactory loggerFactory, AppRunner runner)
         {
             _logger = loggerFactory.CreateLogger<TimerFunc>();
-            _dataService = dataService;
+            _runner = runner;
         }
 
         [Function("TimerFunc")]
@@ -20,7 +20,7 @@ namespace TimerFunc
         {
             _logger.LogInformation($"C# Timer trigger function executed at: {DateTime.Now}");
 
-            _dataService.GetData();
+            _runner.RunUpdate();
             
             if (myTimer.ScheduleStatus is not null)
             {

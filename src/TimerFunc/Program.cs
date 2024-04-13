@@ -1,3 +1,4 @@
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 
@@ -15,6 +16,12 @@ builder.ConfigureServices(services =>
 {
     services.AddTransient<DataService>();
     services.AddHttpClient<MovieDbService>();
+    services.AddTransient<AppRunner>();
+    services.AddTransient<PersonUpdater>();
+    services.AddDbContext<AppDbContext>(options =>
+    {
+        options.UseNpgsql(Environment.GetEnvironmentVariable("CONNECT_STRING"));
+    });
 });
 
 var host = builder.Build();
