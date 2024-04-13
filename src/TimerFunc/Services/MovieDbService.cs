@@ -77,21 +77,27 @@ public class MovieDbService
 
         foreach(var change in changes)
         {
-            var request = new HttpRequestMessage(HttpMethod.Get, $"person/{change.id}/changes?page=1");
-            request.Headers.Add("Authorization", _apiKey);
+            try{
+                var request = new HttpRequestMessage(HttpMethod.Get, $"person/{change.id}/changes?page=1");
+                request.Headers.Add("Authorization", _apiKey);
 
-            var response = await _httpClient.SendAsync(request);
-            if(response.IsSuccessStatusCode)
-            {
-                var content = await response.Content.ReadFromJsonAsync<PersonChangeUpdate>();
-                foreach(var data in content.changes)
+                var response = await _httpClient.SendAsync(request);
+                if(response.IsSuccessStatusCode)
                 {
-                    if(data.items.Count > 1)
+                    var content = await response.Content.ReadFromJsonAsync<PersonChangeUpdate>();
+                    foreach(var data in content.changes)
                     {
-                        _logger.LogWarning($"Person {change.id} has more than one change item");
+                        if(data.items.Count > 1)
+                        {
+                            _logger.LogWarning($"Person {change.id} has more than one change item");
+                        }
                     }
+                    updates.Add(change.id, content);
                 }
-                updates.Add(change.id, content);
+            }
+            catch(Exception ex)
+            {
+                _logger.LogError($"Error getting changes for person {change.id} - {ex.Message}");
             }
         }
         return updates;

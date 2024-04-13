@@ -44,8 +44,6 @@ public class PersonUpdater
             }
             person.updated_at = DateTime.Now;
         }
-
-        //TODO: return here?
         //_dataService.UpdatePerson(person);
     }
 }
