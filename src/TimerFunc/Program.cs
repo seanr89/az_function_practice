@@ -16,8 +16,8 @@ builder.ConfigureServices(services =>
 {
     services.AddSingleton<DataService>();
     services.AddHttpClient<MovieDbService>();
-    services.AddTransient<AppRunner>();
-    services.AddTransient<PersonUpdater>();
+    services.AddSingleton<AppRunner>();
+    services.AddSingleton<PersonUpdater>();
     services.AddDbContextPool<AppDbContext>(options =>
     {
         options.UseNpgsql(Environment.GetEnvironmentVariable("CONNECT_STRING"));
