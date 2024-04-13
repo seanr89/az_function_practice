@@ -1,19 +1,25 @@
 {
     "version": "2.0",
     "logging": {
-        "logLevel": {
-            "default": "Warning",
-            "Function": "Error",
-            "Host.Aggregator": "Error",
-            "Host.Results": "Information",
-            "Microsoft.EntityFrameworkCore.Database": "Warning"
-        },
         "applicationInsights": {
             "samplingSettings": {
                 "isEnabled": true,
                 "excludedTypes": "Request"
             },
             "enableLiveMetricsFilters": true
+        },
+        "LogLevel": {
+            "Default": "Information",
+            "Host.Results": "Error",
+            "Function": "Error",
+            "Host.Aggregator": "Information",
+            "System": "Warning",
+            "Microsoft": "Warning",
+            "System.Net.Http.HttpClient": "Warning",
+            "Microsoft.AspNetCore.HttpLogging.HttpLoggingMiddleware": "Warning",
+            "System.Net.Http.HttpClient.MovieDbService.LogicalHandler": "Warning",
+            "Microsoft.EntityFrameworkCore.Database": "Warning"
         }
-    }
+    },
+    "functionTimeout": "00:05:00"
 }
