@@ -18,6 +18,11 @@ public class PersonUpdater
         foreach(var change in changes)
         {
             _logger.LogInformation($"Updating person {person.name} with change {change.key}");
+            if(change.items is null || change.items[0].value is null)
+            {
+                _logger.LogWarning($"No items found for change {change.key}");
+                continue;
+            }
             switch(change.key)
             {
                 case "name":

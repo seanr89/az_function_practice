@@ -1,4 +1,7 @@
 
+using System.ComponentModel.DataAnnotations.Schema;
+
+[Table("People", Schema = "people")]
 public class Person
 {
     public int id { get; set; }

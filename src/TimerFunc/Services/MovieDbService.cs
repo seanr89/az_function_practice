@@ -1,6 +1,8 @@
 using System.Net.Http.Json;
+using Microsoft.EntityFrameworkCore.Storage.Json;
 using Microsoft.Extensions.Logging;
 using Microsoft.Net.Http.Headers;
+using Newtonsoft.Json;
 
 public class MovieDbService
 {
@@ -84,14 +86,8 @@ public class MovieDbService
                 var response = await _httpClient.SendAsync(request);
                 if(response.IsSuccessStatusCode)
                 {
-                    var content = await response.Content.ReadFromJsonAsync<PersonChangeUpdate>();
-                    // foreach(var data in content.changes)
-                    // {
-                    //     if(data.items.Count > 1)
-                    //     {
-                    //         _logger.LogWarning($"Person {change.id} has more than one change item");
-                    //     }
-                    // }
+                    var stringContent = await response.Content.ReadAsStringAsync();
+                    var content = JsonConvert.DeserializeObject<PersonChangeUpdate>(stringContent);
                     updates.Add(change.id, content);
                 }
             }
