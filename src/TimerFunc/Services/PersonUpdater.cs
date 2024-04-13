@@ -26,25 +26,25 @@ public class PersonUpdater
             switch(change.key)
             {
                 case "name":
-                    person.name = change.items[0].value;
+                    person.name = change.items[0].value.ToString();
                     break;
                 case "birthday":
-                    person.date_of_birth = change.items[0].value;
+                    person.date_of_birth = change.items[0].value.ToString();
                     break;
                 case "deathday":
-                    person.date_of_death = change.items[0].value;
+                    person.date_of_death = change.items[0].value.ToString();
                     break;
                 case "imdb_id":
-                    person.imdb_id = change.items[0].value;
+                    person.imdb_id = change.items[0].value.ToString();
                     break;
                 case "place_of_birth":
-                    person.place_of_birth = change.items[0].value;
+                    person.place_of_birth = change.items[0].value.ToString();
                     break;
                 case "known_for_department":
-                    person.known_for_department = change.items[0].value;
+                    person.known_for_department = change.items[0].value.ToString();
                     break;
                 case "biography":
-                    person.biography = change.items[0].value;
+                    person.biography = change.items[0].value.ToString();
                     break;
             }
             person.updated_at = DateTime.Now;

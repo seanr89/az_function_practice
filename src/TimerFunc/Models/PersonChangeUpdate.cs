@@ -13,5 +13,5 @@ public record Change
 public record Item
 {
     public string action { get; set; }
-    public string? value { get; set; }
+    public object? value { get; set; }
 }

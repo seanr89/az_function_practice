@@ -12,7 +12,7 @@ public class Person
     public string? profile_image_url { get; set; }
     public string? known_for_department { get; set; }
     public string? imdb_id { get; set; }
-    public string? instagram_id { get; set; }
+    public string? instragram_id { get; set; }
     public string? biography { get; set; }
     public DateTime created_at { get; set; }
     public DateTime updated_at { get; set; }
