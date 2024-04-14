@@ -26,6 +26,8 @@ builder.ConfigureServices(services =>
 }).ConfigureLogging(logging =>
 {
     logging.AddFilter("Azure.Core", LogLevel.Warning);
+    logging.AddFilter("Microsoft.EntityFrameworkCore", LogLevel.Warning);
+    logging.AddFilter("System.Net.Http.HttpClient", LogLevel.Warning);
 });
 
 var host = builder.Build();

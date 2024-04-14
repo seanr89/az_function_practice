@@ -4,12 +4,7 @@
         "LogLevel": {
             "Default": "Information",
             "Host.Results": "Information",
-            "Function": "Information",
-            "Host.Aggregator": "Information",
-            "System.Net.Http.HttpClient": "Warning",
-            "Microsoft.AspNetCore.HttpLogging.HttpLoggingMiddleware": "Warning",
-            "System.Net.Http.HttpClient.MovieDbService.LogicalHandler": "Warning",
-            "Microsoft.EntityFrameworkCore.Database": "Warning"
+            "Function": "Warning"
         },
         "applicationInsights": {
             "samplingSettings": {
