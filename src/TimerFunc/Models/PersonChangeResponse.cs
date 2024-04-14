@@ -1,4 +1,8 @@
 
+/// <summary>
+/// Change object objects for a batches person changes model
+/// </summary>
+/// <value></value>
 public record PersonChangeResponse
 {
     public List<PersonChange> results { get; set; }

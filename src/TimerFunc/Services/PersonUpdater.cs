@@ -15,6 +15,7 @@ public class PersonUpdater
     /// </summary>
     /// <param name="person">The person object to update.</param>
     /// <param name="changes">The list of changes to apply.</param>
+    /// <returns>A tuple with a boolean indicating if the person was updated and the updated person object.</returns>
     public (bool updated, Person person) TryUpdatePersonWithChanges(Person person, List<Change> changes)
     {
         bool updating = false;

@@ -1,4 +1,8 @@
 
+/// <summary>
+/// Update update from individual changes for a single person!
+/// </summary>
+/// <value></value>
 public record PersonChangeUpdate
 {
     public List<Change> changes { get; set; }

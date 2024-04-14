@@ -33,6 +33,7 @@ public class MovieDbService
         // Date format is yyyy-MM-dd for start and end date query parameters
         var startDate = date.AddDays(-1).ToString("yyyy-MM-dd");
         var end = date.ToString("yyyy-MM-dd");
+
         // pagingation - needs to start at 1
         int page = 1; 
         // total pages to query - will be updated from first call
@@ -40,16 +41,16 @@ public class MovieDbService
         // list of person change records!
         List<PersonChange> changes = [];
 
-        // recursively get all pages of changes
-        do{
-            //_logger.LogInformation($"Getting people changes for page {page}");    
+        // recursively get all pages of changes for the date
+        do{  
             var request = new HttpRequestMessage(HttpMethod.Get, $"person/changes?end_date={end}&page={page}&start_date={startDate}");
             request.Headers.Add("Authorization", _apiKey);
 
             var response = await _httpClient.SendAsync(request);
             if (response.IsSuccessStatusCode)
             {
-                var content = await response.Content.ReadFromJsonAsync<PersonChangeResponse>();
+                var stringContent = await response.Content.ReadAsStringAsync();
+                var content = JsonConvert.DeserializeObject<PersonChangeResponse>(stringContent);
                 changes.AddRange(content.results.Where(p => p.adult == true));
                 totalPages = content.total_pages;
             }
@@ -97,23 +98,5 @@ public class MovieDbService
             }
         }
         return updates;
-    }
-
-    /// <summary>
-    /// Test Authentication.
-    /// </summary>
-    /// <returns>A task representing the asynchronous operation.</returns>
-    public async Task TestAuthentication()
-    {
-        var request = new HttpRequestMessage(HttpMethod.Get, "authentication");
-        request.Headers.Add("Authorization", _apiKey);
-    
-        var response = await _httpClient.SendAsync(request);
-        if (response.IsSuccessStatusCode)
-        {
-            _logger.LogInformation("Authenticated successfully");
-            return;
-        }
-        _logger.LogWarning("Failed to authenticate");
     }
 }

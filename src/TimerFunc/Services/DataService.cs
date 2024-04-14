@@ -19,6 +19,11 @@ public class DataService
         return await _appDbContext.People.FindAsync(id);
     }
 
+    public async Task<List<Person>> GetPeople(List<int> ids)
+    {
+        return await _appDbContext.People.Where(p => ids.Contains(p.id)).ToListAsync();
+    }
+
     /// <summary>
     /// Updates a person in the database.
     /// </summary>

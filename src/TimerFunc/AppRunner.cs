@@ -27,12 +27,12 @@ public class AppRunner
 
             int notFound = 0;
             List<Person> changes = new();
+            var persons = await _dataService.GetPeople(updates.Keys.ToList());
             foreach(var update in updates)
             {
-                var person = await _dataService.GetPerson(update.Key);
+                var person = persons.FirstOrDefault(p => p.id == update.Key);
                 if(person is not null)
                 {
-                    //_logger.LogInformation($"Person {person.name} found - Updating with changes");
                     var res = _updater.TryUpdatePersonWithChanges(person, update.Value.changes);
                     if(res.updated)
                     {
