@@ -46,7 +46,7 @@ public class AppRunner
             if(changes.Count > 0)
             {
                 _logger.LogInformation($"Updating {changes.Count} people in database");
-                await _dataService.UpdatePersons(changes);
+                //await _dataService.UpdatePersons(changes);
             }
             _logger.LogWarning($"Total of {notFound} people not found in database");
         }).Wait();
