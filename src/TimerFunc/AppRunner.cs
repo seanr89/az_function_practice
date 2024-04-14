@@ -26,17 +26,27 @@ public class AppRunner
             var updates = await _movieDbService.GetPeopleChanges(date);
 
             int notFound = 0;
+            List<Person> changes = new();
             foreach(var update in updates)
             {
                 var person = await _dataService.GetPerson(update.Key);
                 if(person is not null)
                 {
-                    _logger.LogInformation($"Person {person.name} found - Updating with changes");
-                    _updater.TryUpdatePersonWithChanges(person, update.Value.changes);
+                    //_logger.LogInformation($"Person {person.name} found - Updating with changes");
+                    var res = _updater.TryUpdatePersonWithChanges(person, update.Value.changes);
+                    if(res.updated)
+                    {
+                        changes.Add(person);
+                    }
                 }
                 else{
                     notFound++;
                 }
+            }
+            if(changes.Count > 0)
+            {
+                _logger.LogInformation($"Updating {changes.Count} people in database");
+                await _dataService.UpdatePersons(changes);
             }
             _logger.LogWarning($"Total of {notFound} people not found in database");
         }).Wait();

@@ -4,7 +4,7 @@
         "LogLevel": {
             "Default": "Information",
             "Host.Results": "Information",
-            "Function": "Warning",
+            "Function": "Information",
             "Host.Aggregator": "Information",
             "System.Net.Http.HttpClient": "Warning",
             "Microsoft.AspNetCore.HttpLogging.HttpLoggingMiddleware": "Warning",

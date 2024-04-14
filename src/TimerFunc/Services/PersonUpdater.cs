@@ -4,11 +4,9 @@ using Microsoft.Extensions.Logging;
 
 public class PersonUpdater
 {
-    internal readonly DataService _dataService;
     internal readonly ILogger _logger;
-    public PersonUpdater(DataService dataService, ILoggerFactory loggerFactory)
+    public PersonUpdater(ILoggerFactory loggerFactory)
     {
-        _dataService = dataService;
         _logger = loggerFactory.CreateLogger<PersonUpdater>();
     }
 
@@ -17,8 +15,9 @@ public class PersonUpdater
     /// </summary>
     /// <param name="person">The person object to update.</param>
     /// <param name="changes">The list of changes to apply.</param>
-    public void TryUpdatePersonWithChanges(Person person, List<Change> changes)
+    public (bool updated, Person person) TryUpdatePersonWithChanges(Person person, List<Change> changes)
     {
+        bool updating = false;
         foreach(var change in changes)
         {
             if(change.items is null || change.items[0].value is null)
@@ -30,28 +29,38 @@ public class PersonUpdater
             {
                 case "name":
                     person.name = change.items[0].value.ToString();
+                    updating = true;
                     break;
                 case "birthday":
                     person.date_of_birth = change.items[0].value.ToString();
+                    updating = true;
                     break;
                 case "deathday":
                     person.date_of_death = change.items[0].value.ToString();
+                    updating = true;
                     break;
                 case "imdb_id":
                     person.imdb_id = change.items[0].value.ToString();
+                    updating = true;
                     break;
                 case "place_of_birth":
                     person.place_of_birth = change.items[0].value.ToString();
+                    updating = true;
                     break;
                 case "known_for_department":
                     person.known_for_department = change.items[0].value.ToString();
+                    updating = true;
                     break;
                 case "biography":
                     person.biography = change.items[0].value.ToString();
+                    updating = true;
                     break;
             }
-            person.updated_at = DateTime.Now;
+
+            if(updating)
+                person.updated_at = DateTime.Now;
         }
-        //_dataService.UpdatePerson(person);
+        return (updating, person);
+        
     }
 }

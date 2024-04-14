@@ -29,4 +29,15 @@ public class DataService
         _appDbContext.People.Update(person);
         await _appDbContext.SaveChangesAsync();
     }
+
+    /// <summary>
+    /// Updates a list of persons in the database.
+    /// </summary>
+    /// <param name="people">The list of persons to update.</param>
+    /// <returns>The number of entities updated in the database.</returns>
+    public async Task<int> UpdatePersons(List<Person> people)
+    {
+        _appDbContext.People.UpdateRange(people);
+        return await _appDbContext.SaveChangesAsync();
+    }
 }
