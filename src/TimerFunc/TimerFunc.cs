@@ -16,7 +16,7 @@ namespace TimerFunc
         }
 
         [Function("TimerFunc")]
-        public void Run([TimerTrigger("1 12 * * * *")] TimerInfo myTimer)
+        public void Run([TimerTrigger("0 0 23 * * *")] TimerInfo myTimer)
         {
             _logger.LogInformation($"C# Timer trigger function executed at: {DateTime.Now}");
 
