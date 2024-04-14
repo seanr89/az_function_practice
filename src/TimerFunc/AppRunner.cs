@@ -20,9 +20,10 @@ public class AppRunner
     {
         // Get the current date for usage on queries
         DateTime date = DateTime.Now;
-        //var updates = _movieDbService.GetPeopleChanges(date).Result;
 
+        // Handle async processess
         Task.Run(async () => {
+            // run job to talk to movie db api
             var updates = await _movieDbService.GetPeopleChanges(date);
 
             int notFound = 0;
@@ -46,7 +47,7 @@ public class AppRunner
             if(changes.Count > 0)
             {
                 _logger.LogInformation($"Updating {changes.Count} people in database");
-                //await _dataService.UpdatePersons(changes);
+                await _dataService.UpdatePersons(changes);
             }
             _logger.LogWarning($"Total of {notFound} people not found in database");
         }).Wait();
