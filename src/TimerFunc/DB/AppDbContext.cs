@@ -17,8 +17,5 @@ public class AppDbContext : DbContext
     {
         modelBuilder.Entity<Person>()
             .HasKey(p => p.id);
-    
-        // modelBuilder.Entity<Movie>()
-        //     .HasKey(p => p.Id);
     }
 }

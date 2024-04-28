@@ -12,6 +12,7 @@ public class PersonUpdater
 
     /// <summary>
     /// Tries to update a person object with the given changes.
+    /// Limited by the changes that can be applied to a person object.
     /// </summary>
     /// <param name="person">The person object to update.</param>
     /// <param name="changes">The list of changes to apply.</param>
