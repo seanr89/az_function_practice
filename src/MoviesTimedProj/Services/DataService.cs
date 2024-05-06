@@ -14,12 +14,12 @@ public class DataService
         _appDbContext = appDbContext;
     }
 
-    public async Task<Person> GetMovie(int id)
+    public async Task<Movie> GetMovie(int id)
     {
         return await _appDbContext.Movies.FindAsync(id);
     }
 
-    public async Task<List<Person>> GetMovie(List<int> ids)
+    public async Task<List<Movie>> GetMovies(List<int> ids)
     {
         return await _appDbContext.Movies.Where(p => ids.Contains(p.id)).ToListAsync();
     }

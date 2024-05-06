@@ -7,7 +7,7 @@ namespace MoviesTimedProj
     public class MoviesTimedProj
     {
         private readonly ILogger _logger;
-        //private readonly AppRunner _runner;
+        private readonly AppRunner _runner;
 
         public MoviesTimedProj(ILoggerFactory loggerFactory, AppRunner runner)
         {
@@ -15,12 +15,23 @@ namespace MoviesTimedProj
             _runner = runner;
         }
 
-        [Function("MoviesTimedProj")]
-        public void Run([TimerTrigger("0 0 22 * * *")] TimerInfo myTimer)
+        [Function("TimerFunc")]
+        public void Run([TimerTrigger("0 0 2 * * *")] TimerInfo myTimer)
         {
             _logger.LogInformation($"C# Timer trigger function executed at: {DateTime.Now}");
 
-
+            try{
+                _runner.RunUpdate();
+                
+                if (myTimer.ScheduleStatus is not null)
+                {
+                    _logger.LogInformation($"Next timer schedule at: {myTimer.ScheduleStatus.Next}");
+                }
+            }
+            catch(Exception e)
+            {
+                _logger.LogError($"Error running timer function: {e.Message}");
+            }
             _logger.LogInformation("Timer function finished");
         }
     }
