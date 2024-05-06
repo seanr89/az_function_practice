@@ -15,6 +15,11 @@ var builder = new HostBuilder()
 
 builder.ConfigureServices(services =>
 {
+    services.AddHttpClient<MovieDbService>();
+    services.AddDbContextPool<AppDbContext>(options =>
+    {
+        options.UseNpgsql(Environment.GetEnvironmentVariable("CONNECT_STRING"));
+    });
 }).ConfigureLogging(logging =>
 {
     logging.AddFilter("Azure.Core", LogLevel.Warning);
