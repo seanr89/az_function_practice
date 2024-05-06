@@ -6,15 +6,15 @@ public class AppRunner
 {
     internal readonly MovieDbService _movieDbService;
     internal readonly DataService _dataService;
-    //internal readonly PersonUpdater _updater;
+    internal readonly MovieUpdater _updater;
     private readonly ILogger _logger;
 
-    public AppRunner(MovieDbService movieDbService, DataService dataService,
+    public AppRunner(MovieDbService movieDbService, MovieUpdater updater, DataService dataService,
         ILoggerFactory loggerFactory){
         _logger = loggerFactory.CreateLogger<AppRunner>();
         _movieDbService = movieDbService;
         _dataService = dataService;
-        //_updater = updater;
+        _updater = updater;
     }
 
     public void RunUpdate()
@@ -35,11 +35,11 @@ public class AppRunner
                 var movie = movies.FirstOrDefault(p => p.id == update.Key);
                 if(movie is not null)
                 {
-                    // var res = _updater.TryUpdatePersonWithChanges(person, update.Value.changes);
-                    // if(res.updated)
-                    // {
-                    //     changes.Add(person);
-                    // }
+                    var res = _updater.TryUpdateMovieWithChanges(movie, update.Value.changes);
+                    if(res.updated)
+                    {
+                        changes.Add(movie);
+                    }
                 }
                 else{
                     notFound++;

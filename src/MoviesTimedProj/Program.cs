@@ -15,6 +15,7 @@ var builder = new HostBuilder()
 
 builder.ConfigureServices(services =>
 {
+    services.AddTransient<MovieUpdater>();
     services.AddTransient<DataService>();
     services.AddHttpClient<MovieDbService>();
     services.AddDbContextPool<AppDbContext>(options =>
