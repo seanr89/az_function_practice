@@ -26,7 +26,42 @@ public class MovieUpdater
                 continue;
             }
             switch(change.key){
-
+                case "title":
+                    movie.title = change.items[0].value.ToString();
+                    updating = true;
+                    break;
+                case "original_title":
+                    movie.original_title = change.items[0].value.ToString();
+                    updating = true;
+                    break;
+                case "overview":
+                    movie.overview = change.items[0].value.ToString();
+                    updating = true;
+                    break;
+                case "tagline":
+                    movie.tagline = change.items[0].value.ToString();
+                    updating = true;
+                    break;
+                case "keywords":
+                    movie.keywords = change.items[0].value.ToString();
+                    updating = true;
+                    break;
+                case "status":
+                    movie.status = change.items[0].value.ToString();
+                    updating = true;
+                    break;
+                case "poster_url":
+                    movie.poster_url = change.items[0].value.ToString();
+                    updating = true;
+                    break;
+                case "homepage":                
+                    movie.homepage = change.items[0].value.ToString();
+                    updating = true;
+                    break;
+                case "languages":
+                    movie.languages = change.items[0].value.ToString();
+                    updating = true;
+                    break;
             }
 
             if(updating)
